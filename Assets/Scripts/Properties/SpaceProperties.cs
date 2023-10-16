@@ -31,5 +31,11 @@ namespace Properties
         {
             public float Timer;
         }
+
+        public struct AsteroidMovement : IComponentData
+        {
+            public float MoveSpeed;
+            public float RotationSpeed;
+        }
     }
 }

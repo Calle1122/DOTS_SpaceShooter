@@ -30,7 +30,7 @@ namespace Aspects
             {
                 Position = GetRandomSpacePosition(),
                 Rotation = GetRandomRotation(),
-                Scale = GetRandomScale(0.75f, 1.25f)
+                Scale = GetRandomScale(0.9f, 1.1f)
             };
         }
         
@@ -39,13 +39,13 @@ namespace Aspects
         private float3 HalfDimensions => new()
         {
             x = _spaceDimensions.ValueRO.Value.x * 0.5f,
-            y = 0f,
-            z = _spaceDimensions.ValueRO.Value.y * 0.5f
+            y = _spaceDimensions.ValueRO.Value.y * 0.5f,
+            z = 0f
         };
 
         private float GetRandomScale(float min, float max) => _spaceRandom.ValueRW.Value.NextFloat(min, max);
 
-        private quaternion GetRandomRotation() => quaternion.RotateY(_spaceRandom.ValueRW.Value.NextFloat(0f, 360f));
+        private quaternion GetRandomRotation() => quaternion.RotateZ(_spaceRandom.ValueRW.Value.NextFloat(0f, 360f));
 
         private float3 GetRandomSpacePosition()
         {

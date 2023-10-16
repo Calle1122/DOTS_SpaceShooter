@@ -1,5 +1,4 @@
 ﻿using Aspects;
-using Properties;
 using Unity.Burst;
 using Unity.Entities;
 using UnityEngine;
@@ -7,15 +6,12 @@ using UnityEngine;
 namespace Systems
 {
     [BurstCompile]
-    public partial struct PlayerShootSystem : ISystem
+    public partial struct AsteroidMovementSystem : ISystem
     {
         [BurstCompile]
         public void OnCreate(ref SystemState state)
         {
             state.RequireForUpdate<BeginInitializationEntityCommandBufferSystem.Singleton>();
-            
-            state.RequireForUpdate<PlayerProperties.PlayerCombat>();
-            state.RequireForUpdate<PlayerProperties.BulletPrefab>();
         }
 
         [BurstCompile]
@@ -29,35 +25,25 @@ namespace Systems
         {
             var ecbSingleton = SystemAPI.GetSingleton<BeginInitializationEntityCommandBufferSystem.Singleton>();
             
-            new PlayerShootJob
+            new MoveAsteroidJob()
             {
                 DeltaTime = Time.deltaTime,
                 ECB = ecbSingleton.CreateCommandBuffer(state.WorldUnmanaged)
             }.Run();
         }
     }
-    
+
     [BurstCompile]
-    public partial struct PlayerShootJob : IJobEntity
+    public partial struct MoveAsteroidJob : IJobEntity
     {
         public float DeltaTime;
         public EntityCommandBuffer ECB;
-
-        private void Execute(PlayerShootAspect shoot)
+        
+        private void Execute(AsteroidAspect asteroid)
         {
-            shoot.PlayerShootTimer -= DeltaTime;
-
-            if (!shoot.CanShoot) return;
-            //TODO: Add check for shoot input
+            if (asteroid.HasReachedPlayer) return;
             
-            // Instantiate bullet on shoot input
-            
-            shoot.Shoot();
-
-            var newBullet = ECB.Instantiate(shoot.BulletPrefab);
-            var newBulletTransform = shoot.BulletSpawnPoint;
-            
-            ECB.SetComponent(newBullet, newBulletTransform);
+            asteroid.MoveTowardsPlayer(DeltaTime);
         }
     }
 }

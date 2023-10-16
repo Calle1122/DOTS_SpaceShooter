@@ -1,5 +1,4 @@
 ﻿using Aspects;
-using Properties;
 using Unity.Burst;
 using Unity.Entities;
 using UnityEngine;
@@ -7,15 +6,12 @@ using UnityEngine;
 namespace Systems
 {
     [BurstCompile]
-    public partial struct PlayerShootSystem : ISystem
+    public partial struct AsteroidSpawningSystem : ISystem
     {
         [BurstCompile]
         public void OnCreate(ref SystemState state)
         {
             state.RequireForUpdate<BeginInitializationEntityCommandBufferSystem.Singleton>();
-            
-            state.RequireForUpdate<PlayerProperties.PlayerCombat>();
-            state.RequireForUpdate<PlayerProperties.BulletPrefab>();
         }
 
         [BurstCompile]
@@ -29,35 +25,30 @@ namespace Systems
         {
             var ecbSingleton = SystemAPI.GetSingleton<BeginInitializationEntityCommandBufferSystem.Singleton>();
             
-            new PlayerShootJob
+            new SpawnAsteroidJob
             {
                 DeltaTime = Time.deltaTime,
                 ECB = ecbSingleton.CreateCommandBuffer(state.WorldUnmanaged)
             }.Run();
         }
     }
-    
+
     [BurstCompile]
-    public partial struct PlayerShootJob : IJobEntity
+    public partial struct SpawnAsteroidJob : IJobEntity
     {
         public float DeltaTime;
         public EntityCommandBuffer ECB;
-
-        private void Execute(PlayerShootAspect shoot)
+        private void Execute(SpaceAspect space)
         {
-            shoot.PlayerShootTimer -= DeltaTime;
+            space.AsteroidSpawnTimer -= DeltaTime;
+            if (!space.CanSpawnAsteroid) return;
 
-            if (!shoot.CanShoot) return;
-            //TODO: Add check for shoot input
-            
-            // Instantiate bullet on shoot input
-            
-            shoot.Shoot();
+            space.AsteroidSpawnTimer = space.AsteroidSpawnRate;
 
-            var newBullet = ECB.Instantiate(shoot.BulletPrefab);
-            var newBulletTransform = shoot.BulletSpawnPoint;
+            var newAsteroid = ECB.Instantiate(space.GetRandomAsteroidPrefab());
+            var newAsteroidTransform = space.GetRandomSpaceTransform();
             
-            ECB.SetComponent(newBullet, newBulletTransform);
+            ECB.SetComponent(newAsteroid, newAsteroidTransform);
         }
     }
 }
