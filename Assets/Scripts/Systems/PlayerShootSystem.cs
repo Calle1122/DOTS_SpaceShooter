@@ -1,11 +1,15 @@
 ﻿using Aspects;
+using ComponentsAndTags;
 using Properties;
 using Unity.Burst;
+using Unity.Collections;
 using Unity.Entities;
-using UnityEngine;
+using Unity.Transforms;
 
 namespace Systems
 {
+    [UpdateInGroup(typeof(SimulationSystemGroup))]
+    [UpdateBefore(typeof(TransformSystemGroup))]
     [BurstCompile]
     public partial struct PlayerShootSystem : ISystem
     {
@@ -19,45 +23,54 @@ namespace Systems
         }
 
         [BurstCompile]
-        public void OnDestroy(ref SystemState state)
-        {
-            
-        }
-
-        [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
             var ecbSingleton = SystemAPI.GetSingleton<BeginInitializationEntityCommandBufferSystem.Singleton>();
+            var deltaTime = SystemAPI.Time.DeltaTime;
             
-            new PlayerShootJob
+            new ReloadWeaponJob
             {
-                DeltaTime = Time.deltaTime,
-                ECB = ecbSingleton.CreateCommandBuffer(state.WorldUnmanaged)
+                DeltaTime = deltaTime
             }.Run();
+            
+            foreach (var (projectilePrefab, transform) in SystemAPI.Query<PlayerProperties.BulletPrefab, LocalTransform>().WithAll<FireProjectileTag>())
+            {
+                new FireBulletJob
+                {
+                    ECB = ecbSingleton.CreateCommandBuffer(state.WorldUnmanaged),
+                    InitialTransform = transform
+                }.Run();
+            }
         }
-    }
-    
-    [BurstCompile]
-    public partial struct PlayerShootJob : IJobEntity
-    {
-        public float DeltaTime;
-        public EntityCommandBuffer ECB;
-
-        private void Execute(PlayerShootAspect shoot)
+        
+        public partial struct FireBulletJob : IJobEntity
         {
-            shoot.PlayerShootTimer -= DeltaTime;
+            public EntityCommandBuffer ECB;
+            public LocalTransform InitialTransform;
+            
+            [BurstCompile]
+            private void Execute(PlayerShootAspect shoot)
+            {
+                if (!shoot.CanShoot) return;
 
-            if (!shoot.CanShoot) return;
-            //TODO: Add check for shoot input
-            
-            // Instantiate bullet on shoot input
-            
-            shoot.Shoot();
+                shoot.Shoot();
 
-            var newBullet = ECB.Instantiate(shoot.BulletPrefab);
-            var newBulletTransform = shoot.BulletSpawnPoint;
+                var newProjectile = ECB.Instantiate(shoot.BulletPrefab);
+                var newProjectileTransform = LocalTransform.FromPositionRotation(InitialTransform.Position, InitialTransform.Rotation);
+                
+                ECB.SetComponent(newProjectile, newProjectileTransform);
+            }
+        }
+        
+        public partial struct ReloadWeaponJob : IJobEntity
+        {
+            public float DeltaTime;
             
-            ECB.SetComponent(newBullet, newBulletTransform);
+            [BurstCompile]
+            private void Execute(PlayerShootAspect shoot)
+            {
+                shoot.PlayerShootTimer -= DeltaTime;
+            }
         }
     }
 }

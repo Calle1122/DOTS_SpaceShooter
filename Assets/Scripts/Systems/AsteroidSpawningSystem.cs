@@ -1,4 +1,5 @@
-﻿using Aspects;
+﻿using System.Runtime.InteropServices;
+using Aspects;
 using Unity.Burst;
 using Unity.Entities;
 using UnityEngine;
@@ -34,6 +35,7 @@ namespace Systems
     }
 
     [BurstCompile]
+    [StructLayout(LayoutKind.Auto)]
     public partial struct SpawnAsteroidJob : IJobEntity
     {
         public float DeltaTime;

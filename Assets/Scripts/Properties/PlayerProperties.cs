@@ -17,9 +17,6 @@ namespace Properties
 
         public struct PlayerCombat : IComponentData
         {
-            public float Damage;
-            public float BulletSpeed;
-
             public float FireCooldown;
         }
         

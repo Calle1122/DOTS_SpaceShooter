@@ -70,7 +70,7 @@ namespace Aspects
 
         public Entity GetRandomAsteroidPrefab()
         {
-            uint indexPicker = _spaceRandom.ValueRW.Value.NextUInt(1, 2);
+            uint indexPicker = _spaceRandom.ValueRW.Value.NextUInt(1, 3);
             switch (indexPicker)
             {
                 case 1:

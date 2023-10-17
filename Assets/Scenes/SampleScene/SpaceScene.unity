@@ -222,7 +222,7 @@ MonoBehaviour:
     y: 12.5
   randomSeed: 50
   shipSafetyRadius: 25
-  asteroidSpawnFrequency: 1.5
+  asteroidSpawnFrequency: 5
   smallAsteroidPrefab: {fileID: 293548852014138143, guid: 9c7918ad922e53b4cb18143a3fba442b, type: 3}
   bigAsteroidPrefab: {fileID: 7913639763523762543, guid: f77e2d604097b6e49a590df19eff5b23, type: 3}
 --- !u!4 &1954352178

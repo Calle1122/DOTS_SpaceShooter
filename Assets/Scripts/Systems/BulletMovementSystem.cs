@@ -1,17 +1,18 @@
 ﻿using Aspects;
 using Unity.Burst;
 using Unity.Entities;
-using UnityEngine;
+using Unity.Transforms;
 
 namespace Systems
 {
+    [UpdateBefore(typeof(TransformSystemGroup))]
     [BurstCompile]
-    public partial struct AsteroidMovementSystem : ISystem
+    public partial struct BulletMovementSystem : ISystem
     {
         [BurstCompile]
         public void OnCreate(ref SystemState state)
         {
-            state.RequireForUpdate<BeginInitializationEntityCommandBufferSystem.Singleton>();
+            
         }
 
         [BurstCompile]
@@ -23,23 +24,23 @@ namespace Systems
         [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
-            new MoveAsteroidJob()
+            var deltaTime = SystemAPI.Time.DeltaTime;
+            new MoveBulletJob
             {
-                DeltaTime = Time.deltaTime
+                DeltaTime = deltaTime
             }.Run();
         }
     }
-
+    
     [BurstCompile]
-    public partial struct MoveAsteroidJob : IJobEntity
+    public partial struct MoveBulletJob : IJobEntity
     {
         public float DeltaTime;
         
-        private void Execute(AsteroidAspect asteroid)
+        [BurstCompile]
+        private void Execute(BulletAspect bullet)
         {
-            if (asteroid.HasReachedPlayer) return;
-            
-            asteroid.MoveTowardsPlayer(DeltaTime);
+            bullet.MoveBullet(DeltaTime);
         }
     }
 }

@@ -16,6 +16,7 @@ namespace Aspects
         public void MoveTowardsPlayer(float deltaTime)
         {
             _localTransform.ValueRW.Position += MathHelper.GetHeading(_localTransform.ValueRO.Position, new float3(0, 0, 0)) * _asteroidMovement.ValueRO.MoveSpeed * deltaTime;
+            _localTransform.ValueRW = _localTransform.ValueRW.RotateZ(_asteroidMovement.ValueRO.RotationSpeed * deltaTime);
         }
 
         public bool HasReachedPlayer => math.distancesq(_localTransform.ValueRO.Position, new float3(0, 0, 0)) <= .5f;

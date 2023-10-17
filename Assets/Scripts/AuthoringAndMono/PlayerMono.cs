@@ -1,3 +1,4 @@
+using ComponentsAndTags;
 using Properties;
 using Unity.Entities;
 using UnityEngine;
@@ -8,8 +9,6 @@ namespace AuthoringAndMono
     {
         public float startingHealth;
         public float moveSpeed;
-        public float baseDamage;
-        public float bulletSpeed;
         public float fireCooldown;
 
         public GameObject bulletPrefab;
@@ -31,8 +30,6 @@ namespace AuthoringAndMono
             });
             AddComponent(entity, new PlayerProperties.PlayerCombat
             {
-                Damage = authoring.baseDamage,
-                BulletSpeed = authoring.bulletSpeed,
                 FireCooldown = authoring.fireCooldown
             });
             AddComponent(entity, new PlayerProperties.PlayerShootTimer
@@ -43,6 +40,10 @@ namespace AuthoringAndMono
             {
                 Value = GetEntity(authoring.bulletPrefab, TransformUsageFlags.Dynamic)
             });
+            AddComponent(entity, new FireProjectileTag());
+            SetComponentEnabled<FireProjectileTag>(GetEntity(), false);
+            AddComponent(entity, new PlayerTag());
+            AddComponent(entity, new PlayerMoveInput());
         }
     }
 }
