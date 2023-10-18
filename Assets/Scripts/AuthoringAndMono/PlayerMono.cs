@@ -41,7 +41,7 @@ namespace AuthoringAndMono
                 Value = GetEntity(authoring.bulletPrefab, TransformUsageFlags.Dynamic)
             });
             AddComponent(entity, new FireProjectileTag());
-            SetComponentEnabled<FireProjectileTag>(GetEntity(), false);
+            SetComponentEnabled<FireProjectileTag>(entity, false);
             AddComponent(entity, new PlayerTag());
             AddComponent(entity, new PlayerMoveInput());
         }

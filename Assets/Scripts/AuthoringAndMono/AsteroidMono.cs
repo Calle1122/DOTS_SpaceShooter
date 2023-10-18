@@ -1,4 +1,5 @@
-﻿using Properties;
+﻿using ComponentsAndTags;
+using Properties;
 using Unity.Entities;
 using UnityEngine;
 
@@ -20,6 +21,9 @@ namespace AuthoringAndMono
                 MoveSpeed = authoring.moveSpeed,
                 RotationSpeed = authoring.rotationSpeed
             });
+            AddComponent(entity, new IsDestroyedTag());
+            SetComponentEnabled<IsDestroyedTag>(entity, false);
+            AddComponent(entity, new AsteroidTag());
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Properties;
+﻿using ComponentsAndTags;
+using Properties;
 using Unity.Entities;
 using UnityEngine;
 
@@ -23,6 +24,8 @@ namespace AuthoringAndMono
             {
                 Value = authoring.baseDamage
             });
+            AddComponent(entity, new IsDestroyedTag());
+            SetComponentEnabled<IsDestroyedTag>(entity, false);
         }
     }
 }

@@ -2,7 +2,6 @@
 using ComponentsAndTags;
 using Properties;
 using Unity.Burst;
-using Unity.Collections;
 using Unity.Entities;
 using Unity.Transforms;
 
@@ -21,7 +20,7 @@ namespace Systems
             state.RequireForUpdate<PlayerProperties.PlayerCombat>();
             state.RequireForUpdate<PlayerProperties.BulletPrefab>();
         }
-
+        
         [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {

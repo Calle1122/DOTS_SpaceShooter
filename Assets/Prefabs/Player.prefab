@@ -99,5 +99,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startingHealth: 10
   moveSpeed: 3
-  fireCooldown: 0.5
+  fireCooldown: 0.33
   bulletPrefab: {fileID: 1176164116702648820, guid: f431ccb2a1c945f4e90a2d523bb38791, type: 3}

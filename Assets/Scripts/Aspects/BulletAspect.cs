@@ -1,5 +1,6 @@
 ﻿using Properties;
 using Unity.Entities;
+using Unity.Physics;
 using Unity.Transforms;
 
 namespace Aspects
@@ -11,6 +12,7 @@ namespace Aspects
         private readonly RefRW<LocalTransform> _localTransform;
         private readonly RefRO<BulletProperties.BulletSpeed> _bulletSpeed;
         private readonly RefRW<BulletProperties.BulletDamage> _bulletDamage;
+        private readonly RefRW<PhysicsCollider> _physCollider;
 
         public void MoveBullet(float deltaTime)
         {
