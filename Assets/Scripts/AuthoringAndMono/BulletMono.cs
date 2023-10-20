@@ -26,6 +26,7 @@ namespace AuthoringAndMono
             });
             AddComponent(entity, new IsDestroyedTag());
             SetComponentEnabled<IsDestroyedTag>(entity, false);
+            AddComponent(entity, new BulletTag());
         }
     }
 }

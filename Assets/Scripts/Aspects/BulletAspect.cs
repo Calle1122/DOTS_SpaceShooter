@@ -1,6 +1,7 @@
-﻿using Properties;
+﻿using ComponentsAndTags;
+using Properties;
 using Unity.Entities;
-using Unity.Physics;
+using Unity.Mathematics;
 using Unity.Transforms;
 
 namespace Aspects
@@ -12,11 +13,13 @@ namespace Aspects
         private readonly RefRW<LocalTransform> _localTransform;
         private readonly RefRO<BulletProperties.BulletSpeed> _bulletSpeed;
         private readonly RefRW<BulletProperties.BulletDamage> _bulletDamage;
-        private readonly RefRW<PhysicsCollider> _physCollider;
+        private readonly RefRO<BulletTag> _tag;
 
         public void MoveBullet(float deltaTime)
         {
             _localTransform.ValueRW.Position += _localTransform.ValueRW.Up() * _bulletSpeed.ValueRO.Value * deltaTime;
         }
+        
+        public float3 Position => _localTransform.ValueRO.Position;
     }
 }

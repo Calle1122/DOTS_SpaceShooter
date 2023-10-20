@@ -1,4 +1,5 @@
-﻿using Properties;
+﻿using ComponentsAndTags;
+using Properties;
 using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
@@ -12,6 +13,7 @@ namespace Aspects
 
         private readonly RefRW<LocalTransform> _localTransform;
         private readonly RefRO<SpaceProperties.AsteroidMovement> _asteroidMovement;
+        private readonly RefRW<AsteroidTag> _tag;
         
         public void MoveTowardsPlayer(float deltaTime)
         {
@@ -20,5 +22,7 @@ namespace Aspects
         }
 
         public bool HasReachedPlayer => math.distancesq(_localTransform.ValueRO.Position, new float3(0, 0, 0)) <= .5f;
+
+        public float3 Position => _localTransform.ValueRO.Position;
     }
 }
