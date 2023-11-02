@@ -24,6 +24,8 @@ namespace Systems
         [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
+            state.Dependency.Complete();
+            
             var ecbSingleton = SystemAPI.GetSingleton<BeginInitializationEntityCommandBufferSystem.Singleton>();
             var deltaTime = SystemAPI.Time.DeltaTime;
             
@@ -42,6 +44,7 @@ namespace Systems
             }
         }
         
+        [BurstCompile]
         public partial struct FireBulletJob : IJobEntity
         {
             public EntityCommandBuffer ECB;
@@ -61,6 +64,7 @@ namespace Systems
             }
         }
         
+        [BurstCompile]
         public partial struct ReloadWeaponJob : IJobEntity
         {
             public float DeltaTime;
