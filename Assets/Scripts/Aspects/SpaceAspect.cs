@@ -73,7 +73,7 @@ namespace Aspects
             set
             {
                 _spaceSpawnFrequencies.ValueRW.AsteroidFrequency = value;
-                _spaceSpawnFrequencies.ValueRW.AsteroidFrequency = math.max(_spaceSpawnFrequencies.ValueRO.AsteroidFrequency, 0.001f);
+                _spaceSpawnFrequencies.ValueRW.AsteroidFrequency = math.max(_spaceSpawnFrequencies.ValueRO.AsteroidFrequency, 0.025f);
             }
         }
 

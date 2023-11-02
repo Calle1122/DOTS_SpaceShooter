@@ -13,6 +13,7 @@ namespace Aspects
         private readonly RefRW<LocalTransform> _localTransform;
         private readonly RefRO<BulletProperties.BulletSpeed> _bulletSpeed;
         private readonly RefRW<BulletProperties.BulletDamage> _bulletDamage;
+        private readonly RefRW<BulletProperties.BulletLifetime> _bulletLifetime;
         private readonly RefRO<BulletTag> _tag;
 
         public void MoveBullet(float deltaTime)
@@ -21,5 +22,11 @@ namespace Aspects
         }
         
         public float3 Position => _localTransform.ValueRO.Position;
+
+        public float Lifetime
+        {
+            get => _bulletLifetime.ValueRO.Value;
+            set => _bulletLifetime.ValueRW.Value = value;
+        }
     }
 }

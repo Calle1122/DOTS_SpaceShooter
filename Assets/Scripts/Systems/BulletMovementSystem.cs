@@ -1,5 +1,7 @@
 ﻿using Aspects;
+using ComponentsAndTags;
 using Unity.Burst;
+using Unity.Collections;
 using Unity.Entities;
 using Unity.Transforms;
 
@@ -24,6 +26,8 @@ namespace Systems
         [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
+            state.Dependency.Complete();
+            
             var deltaTime = SystemAPI.Time.DeltaTime;
             new MoveBulletJob
             {

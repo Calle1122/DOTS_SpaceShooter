@@ -8,7 +8,8 @@ namespace AuthoringAndMono
     public class BulletMono : MonoBehaviour
     {
         public float baseDamage;
-        public float bulletSpeed; 
+        public float bulletSpeed;
+        public float bulletLifetime;
     }
 
     public class BulletBaker : Baker<BulletMono>
@@ -23,6 +24,10 @@ namespace AuthoringAndMono
             AddComponent(entity, new BulletProperties.BulletDamage
             {
                 Value = authoring.baseDamage
+            });
+            AddComponent(entity, new BulletProperties.BulletLifetime
+            {
+                Value = authoring.bulletLifetime
             });
             AddComponent(entity, new IsDestroyedTag());
             SetComponentEnabled<IsDestroyedTag>(entity, false);

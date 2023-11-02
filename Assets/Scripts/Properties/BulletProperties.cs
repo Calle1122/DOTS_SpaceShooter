@@ -13,5 +13,10 @@ namespace Properties
         {
             public float Value;
         }
+
+        public struct BulletLifetime : IComponentData
+        {
+            public float Value;
+        }
     }
 }

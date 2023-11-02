@@ -2,6 +2,7 @@ using System.Collections;
 using ComponentsAndTags;
 using TMPro;
 using Unity.Entities;
+using Unity.Scenes;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
