@@ -23,6 +23,8 @@ namespace Systems
         [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
+            state.Dependency.Complete();
+            
             new MoveAsteroidJob()
             {
                 DeltaTime = Time.deltaTime

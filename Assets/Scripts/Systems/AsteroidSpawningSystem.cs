@@ -45,6 +45,7 @@ namespace Systems
             space.AsteroidSpawnTimer -= DeltaTime;
             if (!space.CanSpawnAsteroid) return;
 
+            space.AsteroidSpawnRate -= 0.05f;
             space.AsteroidSpawnTimer = space.AsteroidSpawnRate;
 
             var newAsteroid = ECB.Instantiate(space.GetRandomAsteroidPrefab());

@@ -7,7 +7,7 @@ using Unity.Mathematics;
 namespace Systems
 {
     [BurstCompile]
-    public partial struct BulletCollisionSystem : ISystem
+    public partial struct AsteroidCollisionSystem : ISystem
     {
         [BurstCompile]
         public void OnCreate(ref SystemState state)
@@ -20,19 +20,22 @@ namespace Systems
         {
             var ecb = new EntityCommandBuffer(Allocator.Temp);
 
-            foreach (var (bulletAspect, bullet) in SystemAPI.Query<BulletAspect>().WithEntityAccess())
+            foreach (var (playerAspect, player) in SystemAPI.Query<PlayerAspect>().WithEntityAccess())
             {
                 foreach (var (asteroidAspect, asteroid) in SystemAPI.Query<AsteroidAspect>().WithEntityAccess())
                 {
-                    if (math.distancesq(bulletAspect.Position, asteroidAspect.Position) <= (.7f * .7f))
+                    if (math.distancesq(playerAspect.Position, asteroidAspect.Position) <= (.5f * .5f))
                     {
-                        foreach (var playerAspect in SystemAPI.Query<PlayerAspect>())
-                        {
-                            playerAspect.Score++;
-                        }
-                        
                         ecb.DestroyEntity(asteroid);
-                        ecb.DestroyEntity(bullet);
+                        playerAspect.Health--;
+                    }
+                }
+                
+                foreach (var (asteroidAspect, asteroid) in SystemAPI.Query<AsteroidAspect>().WithEntityAccess())
+                {
+                    if (playerAspect.Health <= 0)
+                    {
+                        ecb.DestroyEntity(asteroid);
                     }
                 }
             }

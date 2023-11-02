@@ -13,7 +13,7 @@ namespace Aspects
         private readonly RefRO<LocalTransform> _localTransform;
         private readonly RefRO<SpaceProperties.SpaceDimensions> _spaceDimensions;
         private readonly RefRO<SpaceProperties.SpacePrefabs> _spacePrefabs;
-        private readonly RefRO<SpaceProperties.SpaceSpawnFrequencies> _spaceSpawnFrequencies;
+        private readonly RefRW<SpaceProperties.SpaceSpawnFrequencies> _spaceSpawnFrequencies;
         private readonly RefRW<SpaceProperties.AsteroidsSpawnTimer> _asteroidSpawnTimer;
         private readonly RefRW<SpaceProperties.ShipSafetyRadius> _spaceSafetyRadius;
         private readonly RefRW<SpaceRandom> _spaceRandom;
@@ -66,7 +66,16 @@ namespace Aspects
         }
         
         public bool CanSpawnAsteroid => AsteroidSpawnTimer <= 0f;
-        public float AsteroidSpawnRate => _spaceSpawnFrequencies.ValueRO.AsteroidFrequency;
+
+        public float AsteroidSpawnRate
+        {
+            get => _spaceSpawnFrequencies.ValueRO.AsteroidFrequency;
+            set
+            {
+                _spaceSpawnFrequencies.ValueRW.AsteroidFrequency = value;
+                _spaceSpawnFrequencies.ValueRW.AsteroidFrequency = math.max(_spaceSpawnFrequencies.ValueRO.AsteroidFrequency, 0.1f);
+            }
+        }
 
         public Entity GetRandomAsteroidPrefab()
         {

@@ -5,11 +5,6 @@ namespace Properties
 {
     public static class PlayerProperties
     {
-        public struct PlayerHealth : IComponentData
-        {
-            public float Health;
-        }
-        
         public struct PlayerMovement : IComponentData
         {
             public float MoveSpeed;

@@ -21,7 +21,7 @@ namespace Aspects
             _localTransform.ValueRW = _localTransform.ValueRW.RotateZ(_asteroidMovement.ValueRO.RotationSpeed * deltaTime);
         }
 
-        public bool HasReachedPlayer => math.distancesq(_localTransform.ValueRO.Position, new float3(0, 0, 0)) <= .5f;
+        public bool HasReachedPlayer => math.distancesq(_localTransform.ValueRO.Position, new float3(0, 0, 0)) <= .25f;
 
         public float3 Position => _localTransform.ValueRO.Position;
     }

@@ -20,10 +20,6 @@ namespace AuthoringAndMono
         public override void Bake(PlayerMono authoring)
         {
             var entity = GetEntity(TransformUsageFlags.Dynamic);
-            AddComponent(entity, new PlayerProperties.PlayerHealth
-            {
-                Health = authoring.startingHealth
-            });
             AddComponent(entity, new PlayerProperties.PlayerMovement
             {
                 MoveSpeed = authoring.moveSpeed
@@ -44,6 +40,11 @@ namespace AuthoringAndMono
             SetComponentEnabled<FireProjectileTag>(entity, false);
             AddComponent(entity, new PlayerTag());
             AddComponent(entity, new PlayerMoveInput());
+            AddComponent(entity, new Health
+            {
+                Value = (int)authoring.startingHealth
+            });
+            AddComponent(entity, new Score());
         }
     }
 }
