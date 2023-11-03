@@ -20,6 +20,8 @@ public class UIController : MonoBehaviour
     
     private IEnumerator Start()
     {
+        yield return new WaitForSeconds(1f);
+        
         _entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
 
         yield return new WaitForSeconds(.2f);
